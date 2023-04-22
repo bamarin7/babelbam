@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import CodeEditor from './components/code-editor';
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
 
 const App = () => {
@@ -64,7 +65,7 @@ const App = () => {
   `;
 
   return <div>
-    <CodeEditor />
+    <CodeEditor initialValue='const x = 7;' onChange={(value) => setInput(value)} />
     <textarea value={input} onChange={e => setInput(e.target.value)} ></textarea>
     <div>
       <button onClick={onClick} >Submit</button>
