@@ -7,7 +7,9 @@ interface PreviewProps {
 
 const html = `
 <html>
-  <head></head>
+  <head>
+    <style>html { background-color: #fff; }</style>
+  </head>
   <body>
     <div id="root"></div>
     <script>
@@ -30,7 +32,9 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
 
   useEffect(() => {
     iFrame.current.srcdoc = html;
-    iFrame.current.contentWindow.postMessage(code, '*');
+    setTimeout(() => {
+      iFrame.current.contentWindow.postMessage(code, '*');
+    }, 75);
   }, [code]);
 
   return <div className="wrapper">
