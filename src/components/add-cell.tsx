@@ -3,16 +3,20 @@ import { useActions } from '../hooks/use-actions';
 
 
 interface AddCellProps {
-  nextId: string | null;
+  prevId: string | null;
+  visible?: boolean;
 }
 
-const AddCell: React.FC<AddCellProps> = ({ nextId }) => {
-  const { insertCellBefore } = useActions();
+const AddCell: React.FC<AddCellProps> = ({ prevId, visible }) => {
+  const { insertCellAfter } = useActions();
 
   return (
-    <div>
-      <button onClick={() => insertCellBefore(nextId, 'code')}>Add Code</button>
-      <button onClick={() => insertCellBefore(nextId, 'text')}>Add Text</button>
+    <div className={`add-cell ${visible && 'visible'}`} >
+      <div className="add-buttons">
+        <button className='button is-primary is-small' onClick={() => insertCellAfter(prevId, 'code')}>ADD CODE</button>
+        <button className='button is-primary is-small' onClick={() => insertCellAfter(prevId, 'text')}>ADD TEXT</button>
+      </div>
+      <div className="divider"></div>
     </div>
   );
 };
