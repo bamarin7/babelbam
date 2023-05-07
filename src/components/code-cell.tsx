@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CodeEditor from './code-editor';
 import Preview from './preview';
-import bundle from '../bundler';
 import Resizable from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks/use-actions";
+import { useTypedSelector } from "../hooks/use-typed-selector";
+import './code-cell.css';
 
 
 interface CodeCellProps {
@@ -12,21 +13,24 @@ interface CodeCellProps {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState('');
-  const [err, setErr] = useState('');
-  const { updateCell } = useActions();
+  const { updateCell, createBundle } = useActions();
+  const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
   useEffect(() => {
+    if (!bundle) {
+      createBundle(cell.id, cell.content);
+      return;
+    }
+
     const timer = setTimeout(async () => {
-      const output = await bundle(cell.content);
-      setCode(output.code);
-      setErr(output.err);
+      createBundle(cell.id, cell.content)
     }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cell.content, cell.id, createBundle]);
 
   return (
     <Resizable direction="vertical">
@@ -34,10 +38,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         <Resizable direction="horizontal">
           <CodeEditor initialValue={cell.content} onChange={(value) => updateCell(cell.id, value)} />
         </Resizable>
+        {
+          !bundle || bundle.loading
+            ? <div className="progress-cont"><progress className="progress is-small is-primary progress-bar" max="100">Loading</progress></div>
+            : <Preview code={bundle.code} err={bundle.err} />
+        }
         {/* <div>
           <button onClick={onClick} >Submit</button>
         </div> */}
-        <Preview code={code} err={err} />
       </div>
     </Resizable>
   );
