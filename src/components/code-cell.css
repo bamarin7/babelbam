@@ -1,11 +1,17 @@
-.progress-cont {
+.prog-wrapper {
   background-color: #fff;
-  height: 100%;
   flex-grow: 1;
+  height: 100%;
+}
+
+.progress-cont {
+  height: 100%;
+  width: 100%;
   align-items: center;
   padding-left: 5%;
   padding-right: 5%;
   display: flex;
+  animation: fadeIn 0.5s;
 }
 
 .progress-bar {
@@ -29,5 +35,17 @@
 @keyframes p6 {
   100% {
     inset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

@@ -38,14 +38,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         <Resizable direction="horizontal">
           <CodeEditor initialValue={cell.content} onChange={(value) => updateCell(cell.id, value)} />
         </Resizable>
-        {
-          !bundle || bundle.loading
-            ? <div className="progress-cont"><progress className="progress is-small is-primary progress-bar" max="100">Loading</progress></div>
-            : <Preview code={bundle.code} err={bundle.err} />
-        }
-        {/* <div>
-          <button onClick={onClick} >Submit</button>
-        </div> */}
+        <div className="prog-wrapper">
+          {
+            !bundle || bundle.loading
+              ? <div className="progress-cont"><progress className="progress is-small is-primary progress-bar" max="100">Loading</progress></div>
+              : <Preview code={bundle.code} err={bundle.err} />
+          }
+          {/* <div>
+            <button onClick={onClick} >Submit</button>
+          </div> */}
+        </div>
       </div>
     </Resizable>
   );
